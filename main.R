@@ -1,6 +1,3 @@
-library(writexl)
-library(stringr)
-library(ggplot2)
 library(ape)
 
 set.seed(3000)
@@ -8,7 +5,7 @@ set.seed(3000)
 iter = 3000
 variables = 96
 
-# CROP PLOT
+# PLANT LAYOUT SIMULATION
 df = plantation(n_plant = variables, arr = 2, 
                 width = 550, heigh = 210, 
                 nx = 12, ny = 8,
@@ -46,61 +43,61 @@ y_br_1_l = replicate(iter,
                            ifelse(df$br_1_l,0.06,0.035)))
 
 y_br_1_u = replicate(iter,
-                       rnorm(variables,
-                             ifelse(df$br_1_u,2.21,1.74),
-                             ifelse(df$br_1_u,0.06,0.035)))
+                     rnorm(variables,
+                           ifelse(df$br_1_u,2.21,1.74),
+                           ifelse(df$br_1_u,0.06,0.035)))
 
 y_br_1_r = replicate(iter,
-                       rnorm(variables,
-                             ifelse(df$br_1_r,2.21,1.74),
-                             ifelse(df$br_1_r,0.06,0.035)))
+                     rnorm(variables,
+                           ifelse(df$br_1_r,2.21,1.74),
+                           ifelse(df$br_1_r,0.06,0.035)))
 
 # 1 BORDE - 2 SIDE 
 y_br_2_dl = replicate(iter,
-                        rnorm(variables,
-                              ifelse(df$br_2_dl,2.21,1.74),
-                              ifelse(df$br_2_dl,0.06,0.035)))
+                      rnorm(variables,
+                            ifelse(df$br_2_dl,2.21,1.74),
+                            ifelse(df$br_2_dl,0.06,0.035)))
 y_br_2_du = replicate(iter,
-                        rnorm(variables,
-                              ifelse(df$br_2_du,2.21,1.74),
-                              ifelse(df$br_2_du,0.06,0.035)))
+                      rnorm(variables,
+                            ifelse(df$br_2_du,2.21,1.74),
+                            ifelse(df$br_2_du,0.06,0.035)))
 y_br_2_dr = replicate(iter,
-                        rnorm(variables,
-                              ifelse(df$br_2_dr,2.21,1.74),
-                              ifelse(df$br_2_dr,0.06,0.035)))
+                      rnorm(variables,
+                            ifelse(df$br_2_dr,2.21,1.74),
+                            ifelse(df$br_2_dr,0.06,0.035)))
 
 y_br_2_lu = replicate(iter,
-                        rnorm(variables,
-                              ifelse(df$br_2_lu,2.21,1.74),
-                              ifelse(df$br_2_lu,0.06,0.035)))
+                      rnorm(variables,
+                            ifelse(df$br_2_lu,2.21,1.74),
+                            ifelse(df$br_2_lu,0.06,0.035)))
 y_br_2_lr = replicate(iter,
-                        rnorm(variables,
-                              ifelse(df$br_2_lr,2.21,1.74),
-                              ifelse(df$br_2_lr,0.06,0.035)))
+                      rnorm(variables,
+                            ifelse(df$br_2_lr,2.21,1.74),
+                            ifelse(df$br_2_lr,0.06,0.035)))
 y_br_2_ur = replicate(iter,
-                        rnorm(variables,
-                              ifelse(df$br_2_ur,2.21,1.74),
-                              ifelse(df$br_2_ur,0.06,0.035)))
+                      rnorm(variables,
+                            ifelse(df$br_2_ur,2.21,1.74),
+                            ifelse(df$br_2_ur,0.06,0.035)))
 
 
 # 1 BORDE - 3 SIDE 
 y_br_3_dlu = replicate(iter,
-                         rnorm(variables,
-                               ifelse(df$br_3_dlu,2.21,1.74),
-                               ifelse(df$br_3_dlu,0.06,0.035)))
+                       rnorm(variables,
+                             ifelse(df$br_3_dlu,2.21,1.74),
+                             ifelse(df$br_3_dlu,0.06,0.035)))
 y_br_3_dlr = replicate(iter,
-                         rnorm(variables,
-                               ifelse(df$br_3_dlr,2.21,1.74),
-                               ifelse(df$br_3_dlr,0.06,0.035)))
+                       rnorm(variables,
+                             ifelse(df$br_3_dlr,2.21,1.74),
+                             ifelse(df$br_3_dlr,0.06,0.035)))
 y_br_3_dur = replicate(iter,
-                         rnorm(variables,
-                               ifelse(df$br_3_dur,2.21,1.74),
-                               ifelse(df$br_3_dur,0.06,0.035)))
+                       rnorm(variables,
+                             ifelse(df$br_3_dur,2.21,1.74),
+                             ifelse(df$br_3_dur,0.06,0.035)))
 
 y_br_3_lur = replicate(iter,
-                         rnorm(variables,
-                               ifelse(df$br_3_lur,2.21,1.74),
-                               ifelse(df$br_3_lur,0.06,0.035)))
+                       rnorm(variables,
+                             ifelse(df$br_3_lur,2.21,1.74),
+                             ifelse(df$br_3_lur,0.06,0.035)))
 
 
 # HORIZONTAL LINE CENTER
@@ -204,7 +201,7 @@ df_kap = data.frame(
 
 lapply(df_kap[1:3], shapiro.test)
 
-# ANOVAS Y F-values ####
+# ANOVAS Y F-values
 anovas = lapply(data, function(Vi){
   summary(aov(Vi~dff$trt + dff$blk))
 })
