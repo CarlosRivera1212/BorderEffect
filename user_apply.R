@@ -21,32 +21,31 @@ REND.d=as.matrix(dist(df[,1:2], diag=T, upper=T))
 REND.d.inv <-as.matrix(1/REND.d)
 diag(REND.d.inv) <- 0
 W=as.matrix(REND.d.inv)
-SUMAS=apply(W,1,sum)
-We=W/SUMAS
+We=W/sum(W)
 
 
 # Experimental response data
 ## Simulation response Without-border
-# df$rto = rnorm(300, 1.8, 0.06)
+# df$yield = rnorm(300, 1.8, 0.06)
 
 ## Simulation response one-close-border
-df$rto = rnorm(300,
+df$yield = rnorm(300,
                ifelse(df$br1,1.9,1.8),
                ifelse(df$br1,0.06,0.06))
 
 ## Simulation response two-close-border
-# df$rto = rnorm(300,
+# df$yield = rnorm(300,
 #                ifelse(df$br2 | df$br1,
 #                       1.9,1.8),
 #                ifelse(df$br2 | df$br1,
 #                       0.06,0.06))
 
 
-# Fit lineal model 
-mod = lm(rto ~ br1, df)
+# Linear model fitting for one-closed-border and treatments
+mod = lm(yield ~ br1 + bk1+bk2+tau1+tau2+tau3, df)
 
 # Simulation of new response according to the fitted model
-rto_sim = simulate(mod, 500)
+yield_sim = simulate(mod, 500)
 
 # Calculation of the M matrix
 X=with(df,cbind(int,tau1,tau2,tau3,bk1,bk2))
@@ -56,18 +55,20 @@ Mp=P%*%(solve(t(P)%*%P))%*%t(P)
 
 # Calculation of "Kappa" for new simulated responses
 kap_sim = NULL
-for (i in 1:ncol(rto_sim)) {
-  Ys = rto_sim[,i] 
+for (i in 1:ncol(yield_sim)) {
+  Ys = yield_sim[,i] 
   ks = kap_fun(Ys, We, Mp)
   
   kap_sim[i] = ks
 }
 
 # Calculation of kappa from experimental data 
-kap_exp = kap_fun(df$rto, We, Mp)
+kap_exp = kap_fun(df$yield, We, Mp)
 
 # Add experimental kappa and simulate kappa
 k = c(kap_exp, kap_sim)
+
+# Density plot of kappa simulation
 plot(density(k))
 abline(v = kap_exp)
-text(kap_exp, 1, 'Kap_exp', pos = 4)
+text(kap_exp, 0, 'Kap_exp', pos = 3)
